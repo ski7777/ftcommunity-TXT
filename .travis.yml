@@ -1,0 +1,35 @@
+language: bash
+sudo: required
+dist: trusty
+addons:
+  apt:
+    packages:
+      - python
+      - python-dev
+      - python3
+      - python3-dev
+      - python
+      - build-essential
+      - cpio
+      - patch
+      - bc
+      - rsync
+      - binutils
+      - make
+      - gzip
+      - bzip2
+      - perl
+script:
+- sudo apt upgrade
+- cd buildroot
+- BR2_EXTERNAL=.. make fischertechnik_TXT_defconfig
+- BR2_JLEVEL=$(($(nproc)+1)) make > >(tee build.log |grep '>>>') 2>&1 || {echo 'Failed build last output'; tail -200 build.log; exit 1}
+
+deploy:
+  provider: releases
+  api_key:
+    secure: pLd+fDqGZiRkqxjCv9dSrvotUsT7j541LAjJlbgod084TXDAvckiQTd9YmQo5uTXURomVxwiiCHlRGnhhRVSp7aLhYPFMVLKEGD3Lsx6JamOiCf2SpX5QWTJzxlEX3yrWdVBySKpb+ihmlwJMV8BDCUEeu3grdsdHd6bLNKW0ItEJcH0T7jx3tRx8wHDXGzxFSoE7fowfLh8470hkQxQpVf1Udf9/t1XdYNUTLCvvI7HU1v8Z2NTnxgfXg/AE4RmLpfix+Yfq6txFYUBVtggW9jx6nm4FoDwQV92sMjLYhAOKBmSdnx+RhL/ojHwmFmsTT9+59ktia5GKWc1CoOH85r4nJTEuG0sz3Q/o9I3YT8nvX9lYpyiz9KQXHRoamzeCotf4rCrd3hoIEjhWpn/VJYc3Y2OJFZ5l5P9D+qFnafiCOMnr+Ztge4UrotlFT+6Y/47W1JyiXwiE94cCE2AUCkXJoaREL39DMvVAJAr9t1v8fWadxTb/GK0cjNaM7rPs/PvZGqmSsblqKsUWwU15XUMaWlIGLYyIXRSU1RBWg+hNAV0f3r7FwG0v5bQsUSV4as5rNOMLC8MPc2W9ImKSG7gt5pQXnc6urvHNgfb3ywu+EvFwhlHmZw92Gd6jUmsqvQRMvpU5jgoYmRot1m/8IPk+OISy/Fy3kXmXFSZAQM=
+  file: buildroot/output/images/am335x-kno_txt.dtb buildroot/output/images/rootfs.img buildroot/output/images/uImage
+  on:
+    repo: ski7777/ftcommunity-TXT
+    branch: buildroot-external-travis

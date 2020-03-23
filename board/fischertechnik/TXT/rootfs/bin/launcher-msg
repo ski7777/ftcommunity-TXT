@@ -1,2 +1,2 @@
 #!/bin/sh
-/bin/echo "msg $*" | /usr/bin/nc -c localhost 9000
+/bin/echo "msg $*"

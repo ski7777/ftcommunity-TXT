@@ -14,7 +14,6 @@
 # process   == program to run
 
 # Startup the system
-::sysinit:/usr/sbin/ubiattach -p /dev/mtd10 -d0
 ::sysinit:/bin/mount -a
 ::sysinit:/bin/hostname -F /etc/hostname
 # now run any rc scripts

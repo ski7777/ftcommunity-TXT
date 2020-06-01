@@ -15,4 +15,5 @@ source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/python-zbarlight/Config.in"
 endmenu
 
 menu "Filesystem images"
+source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/fs/txtzip/Config.in"
 endmenu

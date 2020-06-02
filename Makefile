@@ -33,3 +33,14 @@ prepare_defconfigs: buildroot/Makefile
 			make -C buildroot savedefconfig; \
 		fi \
 	done
+
+prepare_outputconfs: buildroot/Makefile
+	@for d in $(shell ls board/ftCommunity/txpi/fragments/output.conf); do \
+		if [ "$${d}" != "common" ]; then \
+			echo Building output.conf for txpi$${d}; \
+			cat board/ftCommunity/txpi/fragments/output.conf/$${d}/*.conf board/ftCommunity/txpi/fragments/output.conf/common/*.conf > board/ftCommunity/txpi/$${d}/output.conf; \
+			sort -o board/ftCommunity/txpi/$${d}/output.conf board/ftCommunity/txpi/$${d}/output.conf; \
+		fi \
+	done
+	
+prepare: prepare_defconfigs prepare_outputconfs

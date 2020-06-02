@@ -24,7 +24,7 @@ release: all
 	rm -f $(zipfile)
 	cp $(imagedir)/$(zipfile) build
 
-build_defconfigs: buildroot/Makefile
+prepare_defconfigs: buildroot/Makefile
 	@for d in $(shell ls configs/fragments/txpi/); do \
 		if [ "$${d}" != "common" ]; then \
 			echo Building txpi$${d}_defconfig; \

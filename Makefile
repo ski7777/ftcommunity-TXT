@@ -23,3 +23,13 @@ release: all
 	mkdir -p build
 	rm -f $(zipfile)
 	cp $(imagedir)/$(zipfile) build
+
+build_defconfigs: buildroot/Makefile
+	@for d in $(shell ls configs/fragments/txpi/); do \
+		if [ "$${d}" != "common" ]; then \
+			echo Building txpi$${d}_defconfig; \
+			cat configs/fragments/txpi/$${d}/*.config configs/fragments/txpi/common/*.config> configs/txpi$${d}_defconfig; \
+			BR2_EXTERNAL=.. make -C buildroot txpi$${d}_defconfig; \
+			make -C buildroot savedefconfig; \
+		fi \
+	done

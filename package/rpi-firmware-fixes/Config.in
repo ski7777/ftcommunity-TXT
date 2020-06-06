@@ -1,0 +1,10 @@
+menuconfig BR2_PACKAGE_RPI_FIRMWARE_FIXES
+  bool "Raspberry Pi firmware fixes"
+  depends on BR2_PACKAGE_RPI_FIRMWARE
+
+if BR2_PACKAGE_RPI_FIRMWARE_FIXES
+  config BR2_PACKAGE_RPI_FIRMWARE_FIXES_BT_UART
+    bool "Fix bluetooth uart"
+    default BR2_PACKAGE_RPI_BT_FIRMWARE
+
+endif

@@ -56,8 +56,15 @@ for t in targets:
                    + (("/" + t["version"])if "version" in t else "") + "/[^/]+.config")
     t["config"] = list(itertools.chain.from_iterable(
         [raw[fn] for fn in filter(re.compile("|".join(matches)).match, raw.keys())]))
-    with open(os.path.join(basedir, t["configname"]), 'w') as f:
+    confpath = os.path.join(basedir, t["configname"])
+    with open(confpath, 'w') as f:
         for l in t["config"]:
             f.write(l)
     os.system("cd buildroot; BR2_EXTERNAL=.. make " + t["configname"])
     os.system("cd buildroot; make savedefconfig")
+    with open(confpath, 'r') as f:
+        reslines = f.readlines()
+    for l in [l.strip() for l in set(t["config"]).difference(set(reslines))]:
+        if l == "":
+            continue
+        print("Line was lost somewhere during build:", l)

@@ -7,4 +7,13 @@ if BR2_PACKAGE_RPI_FIRMWARE_FIXES
     bool "Fix bluetooth uart"
     default BR2_PACKAGE_RPI_BT_FIRMWARE
 
+  config BR2_PACKAGE_RPI_FIRMWARE_FIXES_DISABLE_WARNINGS
+    bool "Disable power warnings"
+    default y
+
+  if BR2_PACKAGE_RPI_FIRMWARE_FIXES_DISABLE_WARNINGS
+    config BR2_PACKAGE_RPI_FIRMWARE_FIXES_DISABLE_WARNINGS_TURBO
+      bool "Allow turbo on low voltage"
+  endif
+
 endif

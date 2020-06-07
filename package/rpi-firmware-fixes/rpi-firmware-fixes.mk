@@ -11,8 +11,7 @@ endif
 define RPI_FIRMWARE_FIXES_BUILD_CMDS
 	$(INSTALL) package/rpi-firmware/config.txt $(@D)
 	if [ "$(BR2_PACKAGE_RPI_FIRMWARE_FIXES)" = "y" ]; then \
-		echo "Adding 'dtoverlay=miniuart-bt' to config.txt (fixes ttyAMA0 serial console)."; \
-		cat $(BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH)/package/rpi-firmware-fixes/miniuart-bt.config >> $(@D)/config.txt; \
+		echo -e "\n# fixes rpi (3B, 3B+, 3A+, 4B and Zero W) ttyAMA0 serial console\ndtoverlay=miniuart-bt" >> $(@D)/config.txt; \
 	fi
 endef
 

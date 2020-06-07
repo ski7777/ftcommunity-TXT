@@ -1,4 +1,4 @@
-menuconfig BR2_PACKAGE_RPI_FIRMWARE_FIXES
+config BR2_PACKAGE_RPI_FIRMWARE_FIXES
   bool "Raspberry Pi firmware fixes"
   depends on BR2_PACKAGE_RPI_FIRMWARE
 

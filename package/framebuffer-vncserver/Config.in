@@ -1,0 +1,3 @@
+config BR2_PACKAGE_FRAMEBUFFER_VNCSERVER
+  bool "framebuffer-vncserver"
+    select BR2_PACKAGE_LIBVNCSERVER

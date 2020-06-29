@@ -1,0 +1,44 @@
+config BR2_PACKAGE_ROBOHEART
+  bool "roboheart"
+
+if BR2_PACKAGE_ROBOHEART
+    menu "Services"
+        comment "Core Services"
+        config BR2_PACKAGE_SERVICE_ACM
+          bool "acm"
+          default y
+        config BR2_PACKAGE_SERVICE_CONFIG
+          bool "config"
+          default y
+        config BR2_PACKAGE_SERVICE_FWVER
+          bool "fwver"
+          select BR2_PACKAGE_SERVICE_WEB
+          default y
+        config BR2_PACKAGE_SERVICE_LOCALE
+          bool "locale"
+          select BR2_PACKAGE_SERVICE_ACM
+          select BR2_PACKAGE_SERVICE_WEB
+          default y
+        config BR2_PACKAGE_SERVICE_RELVER
+          bool "relver"
+          select BR2_PACKAGE_SERVICE_ACM
+          select BR2_PACKAGE_SERVICE_WEB
+          default y
+        config BR2_PACKAGE_SERVICE_POWER
+          bool "power"
+          select BR2_PACKAGE_SERVICE_ACM
+          select BR2_PACKAGE_SERVICE_WEB
+          default y
+        config BR2_PACKAGE_SERVICE_WEB
+          bool "web"
+          default y
+         comment "Auxilary Services"
+         config BR2_PACKAGE_SERVICE_VNCSERVER
+          bool "vncserver"
+          select BR2_PACKAGE_SERVICE_ACM
+          select BR2_PACKAGE_SERVICE_CONFIG
+          select BR2_PACKAGE_SERVICE_WEB
+          select BR2_PACKAGE_FRAMEBUFFER_VNCSERVER
+          default y
+    endmenu
+endif

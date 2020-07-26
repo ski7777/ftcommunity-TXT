@@ -1,54 +1,46 @@
-ROBOHEART_VERSION = 05c38e72490d2afe0f56022a2f54e9e0edd42726
+ROBOHEART_VERSION = c1a7b773c68f7ce6ec25209f62f0b144a483e570
 ROBOHEART_SITE = $(call github,ftCommunity,roboheart,$(ROBOHEART_VERSION))
 ROBOHEART_LICENSE = GPL-3.0-only
 ROBOHEART_SRC_SUBDIR = github.com/ftCommunity/roboheart
 ROBOHEART_BUILD_TARGETS = cmd/roboheart
 
-define ROBOHEART_POST_CONFIGURE_SET_BUILD_OPTIONS
-	if [ "$(BR2_PACKAGE_SERVICE_ACM)" == "y" ]; then \
-		sed -i -E "s/(\"acm\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"acm\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-	if [ "$(BR2_PACKAGE_SERVICE_CONFIG)" == "y" ]; then \
-		sed -i -E "s/(\"config\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"config\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-	if [ "$(BR2_PACKAGE_SERVICE_FWVER)" == "y" ]; then \
-		sed -i -E "s/(\"fwver\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"fwver\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-	if [ "$(BR2_PACKAGE_SERVICE_LOCALE)" == "y" ]; then \
-		sed -i -E "s/(\"locale\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"locale\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-	if [ "$(BR2_PACKAGE_SERVICE_RELVER)" == "y" ]; then \
-		sed -i -E "s/(\"relver\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"relver\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-	if [ "$(BR2_PACKAGE_SERVICE_POWER)" == "y" ]; then \
-		sed -i -E "s/(\"power\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"power\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-	if [ "$(BR2_PACKAGE_SERVICE_WEB)" == "y" ]; then \
-		sed -i -E "s/(\"web\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"web\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-	if [ "$(BR2_PACKAGE_SERVICE_VNCSERVER)" == "y" ]; then \
-		sed -i -E "s/(\"vncserver\":\s*)(true|false)/\1true/" $(@D)/internal/servicemanager/services.go; \
-	else \
-		sed -i -E "s/(\"vncserver\":\s*)(true|false)/\1false/" $(@D)/internal/servicemanager/services.go; \
-	fi
-endef
+ifeq ($(BR2_PACKAGE_ROBOHEART_ALL_SERVICES),y)
+	ROBOHEART_CHECKDEPS_ARGS += -a
+else
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_ACM),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --acm
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_CONFIG),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --config
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_DEVINFO),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --deviceinfo
+    endif
+    ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_FS),y)
+         	ROBOHEART_CHECKDEPS_ARGS += --filesystem
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_FWVER),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --fwver
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_LOCALE),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --locale
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_RELVER),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --releasever
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_POWER),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --power
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_WEB),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --web
+    endif
+	ifeq ($(BR2_PACKAGE_ROBOHEART_SERVICE_VNCSERVER),y)
+        	ROBOHEART_CHECKDEPS_ARGS += --vncserver
+    endif
+endif
 
 define ROBOHEART_POST_CONFIGURE_CHECK_SERVICE_DEPENDENCIES
-	cd $(@D) && go run cmd/checkdeps/main.go
+	cd $(@D) && go run cmd/setservices/*.go $(ROBOHEART_CHECKDEPS_ARGS) && make checkdeps
 endef
 
 ROBOHEART_POST_CONFIGURE_HOOKS += ROBOHEART_POST_CONFIGURE_SET_BUILD_OPTIONS ROBOHEART_POST_CONFIGURE_CHECK_SERVICE_DEPENDENCIES

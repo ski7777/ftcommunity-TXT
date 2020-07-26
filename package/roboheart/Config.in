@@ -2,43 +2,60 @@ config BR2_PACKAGE_ROBOHEART
   bool "roboheart"
 
 if BR2_PACKAGE_ROBOHEART
-    menu "Services"
+    config BR2_PACKAGE_ROBOHEART_ALL_SERVICES
+        bool "Select all services"
+    menuconfig BR2_PACKAGE_ROBOHEART_SELECT_SERVICES
+        bool "Services"
+        depends on !BR2_PACKAGE_ROBOHEART_ALL_SERVICES
+        default y
+    if BR2_PACKAGE_ROBOHEART_SELECT_SERVICES
         comment "Core Services"
-        config BR2_PACKAGE_SERVICE_ACM
+        config BR2_PACKAGE_ROBOHEART_SERVICE_ACM
           bool "acm"
           default y
-        config BR2_PACKAGE_SERVICE_CONFIG
+        config BR2_PACKAGE_ROBOHEART_SERVICE_CONFIG
           bool "config"
+          select BR2_PACKAGE_ROBOHEART_SERVICE_FS
           default y
-        config BR2_PACKAGE_SERVICE_FWVER
+        config BR2_PACKAGE_ROBOHEART_SERVICE_DEVINFO
+          bool "deviceinfo"
+          select BR2_PACKAGE_ROBOHEART_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_FS
+          default y
+        config BR2_PACKAGE_ROBOHEART_SERVICE_FS
+          bool "filesystem"
+          default y
+        config BR2_PACKAGE_ROBOHEART_SERVICE_FWVER
           bool "fwver"
-          select BR2_PACKAGE_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_FS
           default y
-        config BR2_PACKAGE_SERVICE_LOCALE
+        config BR2_PACKAGE_ROBOHEART_SERVICE_LOCALE
           bool "locale"
-          select BR2_PACKAGE_SERVICE_ACM
-          select BR2_PACKAGE_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_ACM
+          select BR2_PACKAGE_ROBOHEART_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_FS
           default y
-        config BR2_PACKAGE_SERVICE_RELVER
+        config BR2_PACKAGE_ROBOHEART_SERVICE_RELVER
           bool "relver"
-          select BR2_PACKAGE_SERVICE_ACM
-          select BR2_PACKAGE_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_ACM
+          select BR2_PACKAGE_ROBOHEART_SERVICE_WEB
           default y
-        config BR2_PACKAGE_SERVICE_POWER
+        config BR2_PACKAGE_ROBOHEART_SERVICE_POWER
           bool "power"
-          select BR2_PACKAGE_SERVICE_ACM
-          select BR2_PACKAGE_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_ACM
+          select BR2_PACKAGE_ROBOHEART_SERVICE_WEB
           default y
-        config BR2_PACKAGE_SERVICE_WEB
+        config BR2_PACKAGE_ROBOHEART_SERVICE_WEB
           bool "web"
           default y
-         comment "Auxilary Services"
-         config BR2_PACKAGE_SERVICE_VNCSERVER
+        comment "Auxilary Services"
+        config BR2_PACKAGE_ROBOHEART_SERVICE_VNCSERVER
           bool "vncserver"
-          select BR2_PACKAGE_SERVICE_ACM
-          select BR2_PACKAGE_SERVICE_CONFIG
-          select BR2_PACKAGE_SERVICE_WEB
+          select BR2_PACKAGE_ROBOHEART_SERVICE_ACM
+          select BR2_PACKAGE_ROBOHEART_SERVICE_CONFIG
+          select BR2_PACKAGE_ROBOHEART_SERVICE_WEB
           select BR2_PACKAGE_FRAMEBUFFER_VNCSERVER
           default y
-    endmenu
+    endif
 endif

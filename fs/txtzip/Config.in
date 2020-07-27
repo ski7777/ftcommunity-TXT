@@ -1,7 +1,5 @@
 config BR2_TARGET_ROOTFS_TXTZIP
 	bool "TXT sd card zip"
-	select BR2_TARGET_ROOTFS_INITRAMFS
-	select BR2_TARGET_ROOTFS_SQUASHFS
 
 if BR2_TARGET_ROOTFS_TXTZIP
 	config BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME
@@ -42,7 +40,7 @@ if BR2_TARGET_ROOTFS_TXTZIP
 			default "zip"
 	endif
 
-	config BR2_TARGET_ROOTFS_TXTZIP_FILES
+	config BR2_TARGET_ROOTFS_TXTZIP_CONFIG
 		string "File list config file"
 		help
 			Path to output configuration file
@@ -57,4 +55,11 @@ if BR2_TARGET_ROOTFS_TXTZIP
 			If target is unspecified the file will just be copied to the root of the output structure
 			If target is a file name the file will be copied using this name to the root of the output structure
 			If target is a path the file will be copied to the specified path in the output structure. The directory will be created automatically
+
+	config BR2_TARGET_ROOTFS_TXTZIP_DEPENDS
+		string "Depending packages"
+		default ""
+		help
+			List of packages that need to be built before
+			For example: rootfs-initramfs rootfs-squashfs
 endif

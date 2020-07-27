@@ -3,11 +3,39 @@
 import sys
 import os
 
-confpath = sys.argv[1]
-fsdir = sys.argv[2]
-name = sys.argv[3]
-extension = sys.argv[4]
-imagedir = sys.argv[5]
+f = open(os.environ["BR2_CONFIG"], "r")
+vars = dict([(l.split("=", 1)[0], l.split("=", 1)[1].strip().strip('"'))
+             for l in f.readlines() if (not l.startswith("#")) and l.strip() != ""])
+f.close()
+
+confpath = os.path.expandvars(vars["BR2_TARGET_ROOTFS_TXTZIP_CONFIG"])
+fsdir = os.environ["ROOTFS_TXTZIP_DIR"]
+imagedir = os.environ["BINARIES_DIR"]
+
+
+def presentAndYes(name):
+    if name in vars:
+        if vars[name] == "y":
+            return True
+    return False
+
+
+custom = False
+if presentAndYes("BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME"):
+    custom = True
+    extension = vars["BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME_EXTENSION"]
+    if presentAndYes("BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME_SOURCE_STRING"):
+        name = vars["BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME_NAME"]
+    else:
+        f = open(os.path.expandvars(vars["BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME_SOURCE_FILE_NAME"]))
+        base = f.readline().strip()
+        f.close()
+        name = vars["BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME_PREFIX"] + \
+            base+vars["BR2_TARGET_ROOTFS_TXTZIP_CUSTOM_NAME_SUFFIX"]
+
+if not custom:
+    name = "txtzip"
+    extension = "zip"
 
 workdir = os.path.join(fsdir, name)
 zippath = os.path.join(imagedir, name + "." + extension)

@@ -1,0 +1,10 @@
+before_script:
+  - apt update && apt install -y sed make binutils build-essential gcc g++ bash patch gzip bzip2 perl tar cpio unzip rsync file bc
+
+stages:
+  - build
+
+compile:
+  stage: build
+  script:
+    - ls

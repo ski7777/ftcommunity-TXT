@@ -45,4 +45,4 @@ release: all
 	$(eval zipfile := build/ftcommunity-txt-$(version).zip)
 	mkdir -p build
 	rm -f $(zipfile)
-	zip -j $(zipfile) $(initramfs-imagedir)/am335x-kno_txt.dtb $(imagedir)/rootfs.img $(initramfs-imagedir)/uImage
+	zip -j -X $(zipfile) $(initramfs-imagedir)/am335x-kno_txt.dtb $(imagedir)/rootfs.img $(initramfs-imagedir)/uImage

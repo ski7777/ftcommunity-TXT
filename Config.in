@@ -1,4 +1,3 @@
-menu "Target packages"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/ft_bt_remote_server/Config.in"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/framebuffer-vncserver/Config.in"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/libroboint/Config.in"
@@ -14,8 +13,3 @@ source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/python-semantic-version/Confi
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/python-smbus2/Config.in"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/python-zbarlight/Config.in"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/roboheart/Config.in"
-endmenu
-
-menu "Filesystem images"
-source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/fs/txtzip/Config.in"
-endmenu

@@ -1,3 +1,4 @@
+source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/cloudflared/Config.in"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/ft_bt_remote_server/Config.in"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/framebuffer-vncserver/Config.in"
 source "$BR2_EXTERNAL_FTCOMMUNITY_TXT_PATH/package/libroboint/Config.in"

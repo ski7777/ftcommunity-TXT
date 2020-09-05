@@ -33,14 +33,14 @@ buildroot-initramfs/.config: $(CONFIG_DEPENDS) buildroot-initramfs/Makefile
 	BR2_EXTERNAL=.. $(MAKE) -C buildroot-initramfs fischertechnik_TXT_initramfs_defconfig
 
 .PHONY: rootfs-build
-rootfs-build: buildroot-rootfs/.config
-	$(MAKE) -C buildroot-rootfs
+rootfs-finalize: buildroot-rootfs/.config
+	$(MAKE) -C buildroot-rootfs target-finalize
 
 .PHONY: rootfs
-rootfs: rootfs-build initramfs
+rootfs: rootfs-finalize initramfs
 	rm -rf buildroot-rootfs/output/target/lib/modules/*
 	cp -r build/modules/* buildroot-rootfs/output/target/lib/modules
-	$(MAKE) rootfs-build
+	$(MAKE) -C buildroot-rootfs
 
 .PHONY: initramfs
 initramfs: buildroot-initramfs/.config

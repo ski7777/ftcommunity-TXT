@@ -47,13 +47,16 @@ initramfs: buildroot-initramfs/.config
 	mkdir -p build/modules
 	$(MAKE) -C buildroot-initramfs
 
-imagedir := buildroot-rootfs/output/images
+rootfs-imagedir := buildroot-rootfs/output/images
 initramfs-imagedir := buildroot-initramfs/output/images
 
+.PHONY: copy-build
+copy-build: all prepare
+	mkdir -p build/images
+	cp $(initramfs-imagedir)/am335x-kno_txt.dtb $(initramfs-imagedir)/uImage $(rootfs-imagedir)/rootfs.img build/images
+
 .PHONY: release
-release: all
+release: copy-build
 	$(eval version := $(shell cat buildroot-rootfs/output/target/etc/fw-ver.txt))
 	$(eval zipfile := build/ftcommunity-txt-$(version).zip)
-	mkdir -p build
-	rm -f $(zipfile)
-	zip -j -X $(zipfile) $(initramfs-imagedir)/am335x-kno_txt.dtb $(imagedir)/rootfs.img $(initramfs-imagedir)/uImage
+	zip -j -X $(zipfile) build/images/am335x-kno_txt.dtb build/images/rootfs.img build/images/uImage

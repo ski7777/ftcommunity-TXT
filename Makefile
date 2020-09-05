@@ -4,6 +4,10 @@ all: initramfs rootfs
 .PHONY: clean
 clean: buildroot-rootfs-clean buildroot-initramfs-clean
 
+.PHONY: prepare
+prepare:
+	mkdir -p build
+
 .PHONY: buildroot-rootfs-clean
 buildroot-rootfs-clean: buildroot-rootfs/Makefile
 	$(MAKE) -C buildroot-rootfs clean
@@ -28,12 +32,19 @@ buildroot-rootfs/.config: $(CONFIG_DEPENDS) buildroot-rootfs/Makefile
 buildroot-initramfs/.config: $(CONFIG_DEPENDS) buildroot-initramfs/Makefile
 	BR2_EXTERNAL=.. $(MAKE) -C buildroot-initramfs fischertechnik_TXT_initramfs_defconfig
 
-.PHONY: rootfs
-rootfs: buildroot-rootfs/.config
+.PHONY: rootfs-build
+rootfs-build: buildroot-rootfs/.config
 	$(MAKE) -C buildroot-rootfs
+
+.PHONY: rootfs
+rootfs: rootfs-build initramfs
+	rm -rf buildroot-rootfs/output/target/lib/modules/*
+	cp -r build/modules/* buildroot-rootfs/output/target/lib/modules
+	$(MAKE) rootfs-build
 
 .PHONY: initramfs
 initramfs: buildroot-initramfs/.config
+	mkdir -p build/modules
 	$(MAKE) -C buildroot-initramfs
 
 imagedir := buildroot-rootfs/output/images

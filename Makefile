@@ -60,3 +60,14 @@ release: copy-build
 	$(eval version := $(shell cat buildroot-rootfs/output/target/etc/fw-ver.txt))
 	$(eval zipfile := build/ftcommunity-txt-$(version).zip)
 	zip -j -X $(zipfile) build/images/am335x-kno_txt.dtb build/images/rootfs.img build/images/uImage
+
+.PHONY: rootfs-source
+rootfs-source: buildroot-rootfs/.config
+	$(MAKE) -C buildroot-rootfs source
+
+.PHONY: initramfs-source
+initramfs-source: buildroot-initramfs/.config
+	$(MAKE) -C buildroot-initramfs source
+
+.PHONY: source
+source: rootfs-source initramfs-source

@@ -1,7 +1,9 @@
 [submodule "docs/_brickly"]
 	path = docs/_brickly
 	url = https://github.com/EstherMi/ft-brickly-userguide.git
-[submodule "buildroot"]
-	path = buildroot
-	url = https://github.com/ftCommunity/buildroot
-	branch = ftcommunity-TXT
+[submodule "buildroot-rootfs"]
+	path = buildroot-rootfs
+	url = https://github.com/buildroot/buildroot
+[submodule "buildroot-initramfs"]
+	path = buildroot-initramfs
+	url = https://github.com/buildroot/buildroot

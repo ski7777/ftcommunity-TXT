@@ -1,0 +1,29 @@
+#!/bin/busybox sh
+export PATH=/usr/bin:/usr/sbin
+
+move_kernel_mounts() {
+  for dir in proc sys dev; do
+    mount -o move $1$dir $2$dir
+  done
+}
+
+# mount kernel filesystems
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mkdir -p /dev/pts
+mkdir -p /dev/shm
+
+mkdir -p /boot /newroot
+
+# mount SD card partitions.
+mount -t vfat /dev/mmcblk1p1 /boot -o dmask=022,fmask=133,flush
+mount -t squashfs /boot/rootfs.img /newroot -o loop,ro
+
+#mount -o move /media/sdcard/boot /newroot/media/sdcard/boot
+move_kernel_mounts / /newroot/
+exec switch_root /newroot /usr/sbin/roboheart
+
+#This will only be run if the exec above failed
+echo "Failed to switch_root. Dropping to a shell"
+move_kernel_mounts /newroot/ /
+exec /bin/sh

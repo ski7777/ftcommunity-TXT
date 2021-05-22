@@ -1,4 +1,0 @@
-## Permissions for ftc access to programs required
-## for wifi setup
-
-ftc     ALL = NOPASSWD: /opt/fischertechnik/start-txtcontrol

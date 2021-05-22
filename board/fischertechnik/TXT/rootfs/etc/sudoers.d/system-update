@@ -1,4 +1,0 @@
-## Permissions for ftc access to programs required
-## for system updates
-
-ftc     ALL = NOPASSWD: /sbin/system-update
